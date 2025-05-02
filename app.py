@@ -1,13 +1,16 @@
 import streamlit as st
 import mysql.connector
 import pandas as pd
+from urllib.parse import urlparse
 
 def connect_db():
+    url = urlparse(st.secrets["MYSQL_URL"])
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Rushhour1.",
-        database="Project"
+        host=url.hostname,
+        user=url.username,
+        password=url.password,
+        database=url.path[1:],  # skip the leading '/'
+        port=url.port
     )
 
 st.set_page_config(page_title="Ashesi Hostel Manager", layout="centered")
